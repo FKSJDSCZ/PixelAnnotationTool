@@ -225,7 +225,9 @@ bool isFullZero(const QImage& image)
         for (int x = 0; x < image.bytesPerLine(); x++)
         {
             if (line[x] > 0)
+            {
                 return false;
+            }
         }
     }
     return true;

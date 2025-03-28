@@ -82,5 +82,5 @@ AboutDialog::AboutDialog(QWidget* parent): QDialog(parent)
 
     auto* close = new QPushButton("Close");
     layout->addWidget(close, 5, 2, 1, 1);
-    connect(close, SIGNAL(clicked()), this, SLOT(hide()));
+    connect(close, &QPushButton::clicked, this, &AboutDialog::hide);
 }

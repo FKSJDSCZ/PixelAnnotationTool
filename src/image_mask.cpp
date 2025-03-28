@@ -56,7 +56,7 @@ void ImageMask::exchangeLabel(int x, int y, const Id2Labels& id_labels, ColorMas
         return;
 
     cv::Mat id_mat = qImage2Mat(id);
-    cv::floodFill(id_mat, cv::Point(x, y), cv::Scalar(cm.id.red(), cm.id.green(), cm.id.blue()), 0, cv::Scalar(0, 0, 0),
+    floodFill(id_mat, cv::Point(x, y), cv::Scalar(cm.id.red(), cm.id.green(), cm.id.blue()), 0, cv::Scalar(0, 0, 0),
                   cv::Scalar(0, 0, 0));
 
     id = mat2QImage(id_mat);

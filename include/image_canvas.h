@@ -14,37 +14,33 @@ class ImageCanvas : public QLabel
     Q_OBJECT
 
 public:
-    explicit ImageCanvas(MainWindow* mainWindow);
-    ~ImageCanvas() override;
+    explicit ImageCanvas(QScrollArea* parent, MainWindow* mainWindow);
 
-    void setId(int id);
-    void setMask(const ImageMask& mask);
+    void setLabelColor(int id);
+
     void setActionMask(const ImageMask& mask);
 
-    ImageMask getMask() const
-    {
-        return _mask;
-    }
-
-    QImage getImage() const
-    {
-        return _image;
-    }
-
-
     void setWatershedMask(const QImage& watershed);
+
+    void setPenSize(int penSize);
+
+    ImageMask getMask() const;
+
+    QImage getImage() const;
+
+    void loadImage(const QString& filePath);
+
+    void saveMask();
+
+    void scaleChanged(double scale);
+
+    void alphaChanged(double alpha);
+
     void refresh();
 
     void updateMaskColor(const Id2Labels& labels)
     {
         _mask.updateColor(labels);
-    }
-
-    void loadImage(const QString& file);
-
-    QScrollArea* getScrollParent() const
-    {
-        return _scrollArea;
     }
 
     bool isNotSaved() const
@@ -54,26 +50,30 @@ public:
 
 protected:
     void mouseMoveEvent(QMouseEvent* event) override;
+
     void mousePressEvent(QMouseEvent* event) override;
-    void keyPressEvent(QKeyEvent* event) override;
-    void wheelEvent(QWheelEvent* event) override;
+
     void mouseReleaseEvent(QMouseEvent* event) override;
+
+    void keyPressEvent(QKeyEvent* event) override;
+
+    void wheelEvent(QWheelEvent* event) override;
+
     void paintEvent(QPaintEvent* event) override;
 
 public slots :
-    void scaleChanged(double);
-    void alphaChanged(double);
-    void setSizePen(int);
     void clearMask();
-    void saveMask();
+
     void undo();
+
     void redo();
 
 private:
     MainWindow* _mainWindow;
 
     void _initPixmap();
-    void _drawFillCircle(QMouseEvent* e);
+
+    void _drawFillCircle(const QMouseEvent* e);
 
     QScrollArea* _scrollArea;
     double _scale;
@@ -84,17 +84,14 @@ private:
     QList<ImageMask> _undoList;
     bool _undo;
     int _undoIndex;
-    QPoint _mousePosition;
-    QString _imageFile;
-    QString _maskFile;
-    QString _watershedFile;
+    QPoint _globalMousePosition;
+    QString _imageFilePath;
+    QString _maskFilePath;
+    QString _watershedFilePath;
     ColorMask _labelColor;
     int _penSize;
-    bool _buttonPressed;
-    QSize _scaledImageSize;
-
-private slots:
-    void adjustScrollBars();
+    bool _leftButtonPressed;
+    bool _rightButtonPressed;
 };
 
 
